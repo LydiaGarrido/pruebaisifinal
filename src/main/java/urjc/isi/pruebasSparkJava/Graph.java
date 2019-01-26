@@ -47,6 +47,7 @@ public class Graph {
 
     // symbol table: key = string vertex, value = set of neighboring vertices
     private ST<String, SET<String>> st;
+    private ST<String, Integer> film = new ST<String, Integer>();
 
     // number of edges
     private int E;
@@ -110,6 +111,18 @@ public class Graph {
         validateVertex(v);
         return st.get(v).size();
     }
+    
+    /**
+     * Returns the vertex type (film or actor [0,1])
+     *
+     * @param  v the vertex
+     * @return the type of {@code v} in this graph
+     * @throws IllegalArgumentException if {@code v} is not a vertex in this graph
+     */
+    public int type(String v) {
+        validateVertex(v);
+        return film.get(v);
+    }
 
    /**
      * Adds the edge v-w to this graph (if it is not already an edge).
@@ -118,8 +131,8 @@ public class Graph {
      * @param  w the other vertex in the edge
      */
     public void addEdge(String v, String w) {
-        if (!hasVertex(v)) addVertex(v);
-        if (!hasVertex(w)) addVertex(w);
+        if (!hasVertex(v)) addVertex(v,true); //peli
+        if (!hasVertex(w)) addVertex(w,false); //actor
         if (!hasEdge(v, w)) E++;
         st.get(v).add(w);
         st.get(w).add(v);
@@ -130,8 +143,15 @@ public class Graph {
      *
      * @param  v the vertex
      */
-    public void addVertex(String v) {
-        if (!hasVertex(v)) st.put(v, new SET<String>());
+    public void addVertex(String v, boolean flag) {
+        if (!hasVertex(v)) {
+        	st.put(v, new SET<String>());
+        	if (flag) {
+        		film.put(v, 1); //metemos en el set un 1 si es film, un 0 si es actor
+        	}else {
+        		film.put(v, 0); 
+        	}
+        }
     }
 
 
@@ -142,6 +162,15 @@ public class Graph {
      */
     public Iterable<String> vertices() {
         return st.keys();
+    }
+    
+    /**
+     * Returns the vertices of films/actors in this graph.
+     *
+     * @return the set of vertices in this graph
+     */
+    public Iterable<String> verticesFilm() {
+        return film.keys();
     }
 
    /**
@@ -154,6 +183,18 @@ public class Graph {
     public Iterable<String> adjacentTo(String v) {
         validateVertex(v);
         return st.get(v);
+    }
+    
+    /**
+     * Returns the number of films/actors in that vertex
+     *
+     * @param  v the vertex
+     * @return the value of the key (vertex) v
+     * @throws IllegalArgumentException if {@code v} is not a vertex in this graph
+     */
+    public int getter(String v) {
+        validateVertex(v);
+        return film.get(v);
     }
 
    /**

@@ -15,6 +15,8 @@ import java.sql.SQLException;
 
 public class MainTest {
 	
+	private static Connection connection;
+
 	private String s;
 	@Before //Set up - called before every test method.
 	public void setUp()
@@ -24,7 +26,6 @@ public class MainTest {
       			connection = DriverManager.getConnection("jdbc:sqlite:Database/IMDb.db");
     		} catch(SQLException e) {
 	      		System.err.println(e.getMessage());
-	    		}
 		}
 
 	}
@@ -48,13 +49,15 @@ public class MainTest {
 	}
 
 	@Test (expected = NullPointerException.class)
-	public void testInsertNullActor() throws SQLException {
+	public void testInsertNullActor() throws SQLException
+	{
 		Main.insertActor(connection, null);
 	}
 
 	
 	@Test (expected = NullPointerException.class)
-  	public void testInsertNullWorks() throws SQLException {
+  	public void testInsertNullWorks() throws SQLException
+	{
     		Main.insertWorks_In(connection, null, null);
 	}	
 }

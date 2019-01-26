@@ -1,0 +1,10 @@
+CREACIÓN DE TABLA PARA GRAFOS
+
+sqlite 3 IMDb.db
+
+.output film_actors.txt  --> redirige la salida al fichero
+.separator "/"
+
+SELECT movies.title, workers.primaryName FROM movies JOIN works_in ON movies.titleID = works_in.titleID JOIN workers ON works_in.nameID = workers.nameID WHERE works_in.worksAS='actor' or works_in.worksAS='actress';
+
+.output stdout
